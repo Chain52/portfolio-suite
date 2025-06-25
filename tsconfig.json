@@ -1,0 +1,43 @@
+{
+  "include": ["**/*"],
+  "exclude": ["node_modules", "dist", "build"],
+  "compilerOptions": {
+    // Type Checking
+    "strict": true,
+    "noImplicitAny": true, // Allowing any risks exposes holes in type-safety
+    "strictNullChecks": true, // Prefer distinction between null and undefined
+    "exactOptionalPropertyTypes": true, // Prefer distinction between assignable undefined and unassigned
+
+    // Modules
+    "baseUrl": ".",
+    "module": "ES2022",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "paths": {
+      "@utils/*": ["lib/utils/*"],
+      "@ui/*": ["lib/ui/*"],
+      "@types/*": ["lib/types/*"]
+    },
+
+    // Emit
+    "noEmit": true,
+
+    // JavaScript Support
+    "allowJs": false,
+    "checkJs": false,
+
+    // Interop Constraints
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
+    "verbatimModuleSyntax": true,
+
+    // Language & Environment
+    "target": "ES2022",
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "jsx": "react-jsx",
+
+    // Completeness
+    "skipLibCheck": true
+  }
+}
