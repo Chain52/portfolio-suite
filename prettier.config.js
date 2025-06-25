@@ -1,5 +1,7 @@
-import { type Config } from 'prettier';
-
+/**
+ * @see https://prettier.io/docs/configuration
+ * @type {import("prettier").Config}
+ */
 export default {
   trailingComma: 'none',
   useTabs: false,
@@ -7,6 +9,5 @@ export default {
   bracketSpacing: true,
   arrowParens: 'always',
   semi: true,
-  singleQuote: true,
-  plugins: ['prettier-plugin-tailwindcss']
-} satisfies Config;
+  singleQuote: true
+};

@@ -1,6 +1,4 @@
 {
-  "include": ["**/*"],
-  "exclude": ["node_modules", "dist", "build"],
   "compilerOptions": {
     // Type Checking
     "strict": true,
@@ -10,8 +8,8 @@
 
     // Modules
     "baseUrl": ".",
-    "module": "ES2022",
-    "moduleResolution": "node",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "resolveJsonModule": true,
     "paths": {
       "@utils/*": ["lib/utils/*"],
@@ -30,7 +28,6 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "forceConsistentCasingInFileNames": true,
-    "verbatimModuleSyntax": true,
 
     // Language & Environment
     "target": "ES2022",
