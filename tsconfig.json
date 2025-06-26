@@ -14,7 +14,8 @@
     "paths": {
       "@utils/*": ["lib/utils/*"],
       "@ui/*": ["lib/ui/*"],
-      "@types/*": ["lib/types/*"]
+      "@types/*": ["lib/types/*"],
+      "@portfolio/*": ["./*"]
     },
 
     // Emit
@@ -32,7 +33,7 @@
     // Language & Environment
     "target": "ES2022",
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "jsx": "react-jsx",
+    "jsx": "react",
 
     // Completeness
     "skipLibCheck": true

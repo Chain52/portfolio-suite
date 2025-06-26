@@ -1,17 +1,47 @@
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
-import prettereslint from 'eslint-config-prettier/flat';
+import eslintPluginJsxA11y from 'eslint-plugin-jsx-a11y';
+import eslintConfigPrettierFlat from 'eslint-config-prettier/flat';
+import eslintPluginReact from 'eslint-plugin-react';
+import eslintPluginReactHooks from 'eslint-plugin-react-hooks';
+import eslintPluginReactRefresh from 'eslint-plugin-react-refresh';
 
-export default tseslint.config([
-  eslint.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
-  prettereslint,
+export default tseslint.config(
   {
+    linterOptions: {
+      reportUnusedDisableDirectives: 'warn'
+    },
     languageOptions: {
+      parser: tseslint.parser,
       parserOptions: {
-        project: ['./tsconfig.json'],
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        project: ['./tsconfig.json', './apps/*/tsconfig.json'],
         tsconfigRootDir: import.meta.dirname
       }
-    }
+    },
+    extends: [
+      eslint.configs.recommended,
+      ...tseslint.configs.recommendedTypeChecked
+    ],
+    settings: {
+      react: {
+        version: 'detect'
+      }
+    },
+    ignores: ['dist', 'build', 'node_modules', 'apps/*/dist', 'apps/*/build']
+  },
+  {
+    files: ['apps/**/*.tsx'],
+    extends: [
+      eslintPluginReact.configs.flat.recommended,
+      eslintPluginJsxA11y.flatConfigs.recommended,
+      eslintPluginReactHooks.configs['recommended-latest'],
+      eslintPluginReactRefresh.configs.vite
+    ]
+  },
+  {
+    files: ['**/*'],
+    extends: [eslintConfigPrettierFlat]
   }
-])
+);
