@@ -5,6 +5,7 @@ import eslintConfigPrettierFlat from 'eslint-config-prettier/flat';
 import eslintPluginReact from 'eslint-plugin-react';
 import eslintPluginReactHooks from 'eslint-plugin-react-hooks';
 import eslintPluginReactRefresh from 'eslint-plugin-react-refresh';
+import eslintPluginJest from 'eslint-plugin-jest';
 
 export default tseslint.config(
   {
@@ -22,7 +23,8 @@ export default tseslint.config(
     },
     extends: [
       eslint.configs.recommended,
-      ...tseslint.configs.recommendedTypeChecked
+      ...tseslint.configs.recommendedTypeChecked,
+      eslintPluginJest.configs['flat/recommended']
     ],
     settings: {
       react: {

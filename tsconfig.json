@@ -32,7 +32,7 @@
 
     // Language & Environment
     "target": "ES2022",
-    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "lib": ["dom", "ES2022"],
     "jsx": "react",
 
     // Completeness

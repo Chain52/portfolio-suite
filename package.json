@@ -4,8 +4,8 @@
   "type": "module",
   "private": true,
   "workspaces": [
-    "apps/*",
-    "apps/demos/*",
+    "apps/main/*",
+    "apps/demos/*/*",
     "lib/*",
     "devOps"
   ],
@@ -21,6 +21,7 @@
     "@types/eslint-plugin-jsx-a11y": "^6",
     "eslint": "^9.29.0",
     "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-jest": "^29.0.1",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
