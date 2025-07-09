@@ -1,20 +1,39 @@
 {
-  "name": "backend",
+  "name": "@portfolio/sudoku-backend",
   "type": "module",
   "packageManager": "yarn@4.9.2",
+  "scripts": {
+    "test": "jest --config jest.config.js",
+    "test:watch": "jest --config jest.config.js --watch",
+    "test:coverage": "jest --config jest.config.js --coverage",
+    "test:coverage:watch": "jest --config jest.config.js --coverage --watch"
+  },
   "dependencies": {
     "aws-lambda": "^1.0.7",
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "serverless-http": "^3.2.0"
+    "morgan": "^1.10.0",
+    "serverless-http": "^3.2.0",
+    "signale": "^1.4.0",
+    "zod": "^3.25.67"
   },
   "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
+    "@babel/preset-typescript": "^7.27.1",
     "@types/aws-lambda": "^8.10.150",
+    "@types/babel__core": "^7",
+    "@types/babel__preset-env": "^7",
     "@types/cors": "^2",
     "@types/express": "^5",
     "@types/jest": "^30.0.0",
+    "@types/morgan": "^1",
     "@types/node": "^24.0.7",
+    "@types/signale": "^1",
+    "@types/supertest": "^6.0.3",
+    "babel-jest": "^30.0.4",
     "jest": "^30.0.3",
+    "supertest": "^7.1.1",
     "ts-jest": "^29.4.0",
     "typescript": "^5.8.3"
   }

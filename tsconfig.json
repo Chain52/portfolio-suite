@@ -15,7 +15,8 @@
       "@utils/*": ["lib/utils/*"],
       "@ui/*": ["lib/ui/*"],
       "@types/*": ["lib/types/*"],
-      "@portfolio/*": ["./*"]
+      "@sudoku-backend/*": ["apps/demos/sudoku/backend/src/*"],
+      "@sudoku-backend-tests/*": ["apps/demos/sudoku/backend/tests/*"]
     },
 
     // Emit
