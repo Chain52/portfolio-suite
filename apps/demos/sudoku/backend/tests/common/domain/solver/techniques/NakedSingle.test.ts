@@ -1,16 +1,18 @@
 import { gridMocks } from '@sudoku-backend-tests/mocks';
 import {
   type Technique,
+  CellMutation,
   Grid,
-  NakedSingle,
-  SolutionTracer
+  GridMutation,
+  NakedSingle
 } from '@sudoku-backend/common/domain';
-import { Difficulty } from '@sudoku-backend/common/schema';
+import { GridMutationType } from '@sudoku-backend/common/schema';
 
 describe('NakedSingle Technique Impl', () => {
   let technique: Technique;
   let grid: Grid;
-  let tracer: SolutionTracer;
+  let mutation: CellMutation;
+  let negativeMutation: GridMutation | undefined;
 
   beforeEach(() => {
     technique = new NakedSingle();
@@ -18,83 +20,51 @@ describe('NakedSingle Technique Impl', () => {
 
   describe('Initialization', () => {
     it('should be able to initialize', () => {
-      expect(new NakedSingle()).toBeInstanceOf(NakedSingle);
+      expect(technique).toBeInstanceOf(NakedSingle);
     });
   });
 
   describe('Properties', () => {
-    describe('Fields', () => {
-      // XXX: will remove if isApplicable is added
-      it('should not have any public fields', () => {
-        const descriptors = Object.getOwnPropertyDescriptors(
-          NakedSingle.prototype
-        );
-        const hasNoPublicFields = Object.values(descriptors).every(
-          (descriptor) =>
-            typeof descriptor.value === 'function' &&
-            !(descriptor.get || descriptor.set)
-        );
-        expect(hasNoPublicFields).toBe(true);
-      });
-    });
-
     describe('Methods', () => {
       describe('apply', () => {
-        describe('Standard Behaviors', () => {
+        describe.each(
+          Object.keys(gridMocks.nakedSingle.positive).map((constraint) => [
+            constraint as keyof typeof gridMocks.nakedSingle.positive
+          ])
+        )('given a %s-based constraint', (constraint) => {
+          const mock = gridMocks.nakedSingle.positive[constraint];
           beforeEach(() => {
-            tracer = SolutionTracer.createTracer(
-              Difficulty.Easy,
-              gridMocks.emptyGrid()
+            grid = mock.grid();
+            const tempMutation = technique.apply(grid).mutation;
+            if (tempMutation && tempMutation.type === GridMutationType.Number) {
+              mutation = tempMutation;
+            }
+          });
+
+          it('should solve the available deduction', () => {
+            expect(grid.getCellNumber(mutation.coordinates)).toBe(
+              mock.expected.number
             );
           });
 
-          it('should return undefined', () => {
-            expect(typeof technique.apply(tracer)).toBeUndefined();
-          });
-
-          it("should update the tracer's attempted techniques count", () => {
-            technique.apply(tracer);
-            expect(tracer.currentStep.techniquesAttempted).toBe(1);
+          it('should return the mutation', () => {
+            expect(mutation).toEqual<GridMutation>(mock.expected);
           });
         });
 
-        describe('State Dependent Behaviors', () => {
-          let tracer: SolutionTracer;
-
-          describe.each(
-            Object.keys(gridMocks.nakedSingle.positive).map((constraint) => [
-              constraint as keyof typeof gridMocks.nakedSingle.positive
-            ])
-          )('given a %s-based constraint', (constraint) => {
-            const mock = gridMocks.nakedSingle.positive[constraint];
-            beforeEach(() => {
-              grid = mock.grid();
-              tracer = SolutionTracer.createTracer(Difficulty.Easy, grid);
-              technique.apply(tracer);
-            });
-
-            it('should solve the available deduction', () => {
-              expect(grid.getCellNumber(mock.expected.coordinates)).toBe(
-                mock.expected.value
-              );
-            });
+        describe.each(
+          Object.keys(gridMocks.nakedSingle.negative).map((constraint) => [
+            constraint as keyof typeof gridMocks.nakedSingle.negative
+          ])
+        )('given a %s-based constraint', (constraint) => {
+          const mock = gridMocks.nakedSingle.negative[constraint];
+          beforeEach(() => {
+            grid = mock.grid();
+            negativeMutation = technique.apply(grid).mutation;
           });
 
-          describe.each(
-            Object.keys(gridMocks.nakedSingle.negative).map((constraint) => [
-              constraint as keyof typeof gridMocks.nakedSingle.negative
-            ])
-          )('given a %s-based constraint', (constraint) => {
-            const mock = gridMocks.nakedSingle.negative[constraint];
-            beforeEach(() => {
-              grid = mock.grid();
-              tracer = SolutionTracer.createTracer(Difficulty.Easy, grid);
-              technique.apply(tracer);
-            });
-
-            it('should not make any changes', () => {
-              expect(grid.toJSON()).toBe(tracer.puzzle.toJSON());
-            });
+          it('should not make any changes', () => {
+            expect(negativeMutation).toBeUndefined();
           });
         });
       });

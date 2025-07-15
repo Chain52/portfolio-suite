@@ -6,7 +6,8 @@ export default {
   },
   testEnvironment: 'node',
   moduleNameMapper: {
-    '^@sudoku-backend/(.*)$': '<rootDir>/src/$1'
+    '^@sudoku-backend/(.*)$': '<rootDir>/src/$1',
+    '^@sudoku-backend-tests/(.*)$': '<rootDir>/tests/$1'
   },
   testMatch: ['**/tests/**/*.test.ts']
 };

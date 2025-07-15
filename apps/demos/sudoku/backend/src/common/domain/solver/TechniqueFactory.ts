@@ -1,17 +1,27 @@
 import { Technique } from './types';
 import * as Techniques from './techniques';
+import { Difficulty } from '../../schema';
 
 export default class TechniqueFactory {
   static #techniques: Technique[];
   static #beginnerTechniques: Technique[];
 
-  static getTechniques(): Technique[] {
+  static getAllTechniques(): Technique[] {
     if (!TechniqueFactory.#techniques) {
       TechniqueFactory.#techniques = [
         ...TechniqueFactory.getBeginnerTechniques()
       ];
     }
     return TechniqueFactory.#techniques;
+  }
+
+  static getTechniques(difficulty: Difficulty): Technique[] {
+    switch (difficulty) {
+      case Difficulty.Easy:
+        return TechniqueFactory.getBeginnerTechniques();
+      default:
+        throw new Error('Unsupported difficulty: ' + difficulty);
+    }
   }
 
   static getBeginnerTechniques(): Technique[] {
