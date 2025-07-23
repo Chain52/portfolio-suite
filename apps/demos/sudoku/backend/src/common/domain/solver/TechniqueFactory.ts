@@ -6,27 +6,30 @@ export default class TechniqueFactory {
   static #techniques: Technique[];
   static #beginnerTechniques: Technique[];
 
-  static getAllTechniques(): Technique[] {
+  static #getAllTechniques(): Technique[] {
     if (!TechniqueFactory.#techniques) {
       TechniqueFactory.#techniques = [
-        ...TechniqueFactory.getBeginnerTechniques()
+        ...TechniqueFactory.#getBeginnerTechniques()
       ];
     }
     return TechniqueFactory.#techniques;
   }
 
-  static getTechniques(difficulty: Difficulty): Technique[] {
+  static getTechniques(difficulty?: Difficulty): Technique[] {
     switch (difficulty) {
       case Difficulty.Easy:
-        return TechniqueFactory.getBeginnerTechniques();
+        return TechniqueFactory.#getBeginnerTechniques();
       default:
-        throw new Error('Unsupported difficulty: ' + difficulty);
+        return TechniqueFactory.#getAllTechniques();
     }
   }
 
-  static getBeginnerTechniques(): Technique[] {
+  static #getBeginnerTechniques(): Technique[] {
     if (!TechniqueFactory.#beginnerTechniques) {
-      TechniqueFactory.#beginnerTechniques = [new Techniques.NakedSingle()];
+      TechniqueFactory.#beginnerTechniques = [
+        new Techniques.NakedSingle(),
+        new Techniques.HiddenSingle()
+      ];
     }
     return TechniqueFactory.#beginnerTechniques;
   }

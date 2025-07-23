@@ -1,13 +1,18 @@
-import { Grid, GridMutation } from '@sudoku-backend/common/domain';
-
-type GridMock = {
-  grid: () => Grid;
-  expected: GridMutation;
-};
+import { Grid } from '@sudoku-backend/common/domain';
+import { GridMock } from './types';
 
 export default {
   positive: {
     row: {
+      /**
+       * ┏━━━┯━━━┯━━━┓
+       * ┃ 1 │   │ 3 ┃
+       * ┠───┼───┼───┨
+       * ┃ 2 │ 3 │ 1 ┃
+       * ┠───┼───┼───┨
+       * ┃ 3 │ 1 │ 2 ┃
+       * ┗━━━┷━━━┷━━━┛
+       */
       grid: () => Grid.from('1,,3,2,3,1,3,1,2'),
       expected: {
         type: 'number',
@@ -16,6 +21,15 @@ export default {
       }
     },
     column: {
+      /**
+       * ┏━━━┯━━━┯━━━┓
+       * ┃ 1 │ 2 │ 3 ┃
+       * ┠───┼───┼───┨
+       * ┃   │ 3 │ 1 ┃
+       * ┠───┼───┼───┨
+       * ┃ 3 │ 1 │ 2 ┃
+       * ┗━━━┷━━━┷━━━┛
+       */
       grid: () => Grid.from('1,2,3,,3,1,3,1,2'),
       expected: {
         type: 'number',
@@ -24,6 +38,17 @@ export default {
       }
     },
     box: {
+      /**
+       * ┏━━━┯━━━┳━━━┯━━━┓
+       * ┃ 1 │ 2 ┃ 3 │ 4 ┃
+       * ┠───┼───╂───┼───┨
+       * ┃ 4 │ 3 ┃   │ 1 ┃
+       * ┣━━━┿━━━╋━━━┿━━━┫
+       * ┃ 2 │ 1 ┃ 4 │ 3 ┃
+       * ┠───┼───╂───┼───┨
+       * ┃ 3 │ 4 ┃ 1 │ 2 ┃
+       * ┗━━━┷━━━┻━━━┷━━━┛
+       */
       grid: () => Grid.from('1,2,3,4,4,3,,1,2,1,4,3,3,4,1,2'),
       expected: {
         type: 'number',
@@ -32,6 +57,17 @@ export default {
       }
     },
     mix: {
+      /**
+       * ┏━━━┯━━━┳━━━┯━━━┓
+       * ┃   │   ┃   │ 4 ┃
+       * ┠───┼───╂───┼───┨
+       * ┃ 3 │   ┃   │   ┃
+       * ┣━━━┿━━━╋━━━┿━━━┫
+       * ┃   │   ┃   │   ┃
+       * ┠───┼───╂───┼───┨
+       * ┃   │   ┃ 2 │   ┃
+       * ┗━━━┷━━━┻━━━┷━━━┛
+       */
       grid: () => Grid.from(',,,4,3,,,,,,,,,,2,'),
       expected: {
         type: 'number',
@@ -42,7 +78,7 @@ export default {
   } satisfies Record<string, GridMock>,
   negative: {
     none: {
-      grid: () => Grid.from('1,,,4,,4,1,,,2,4,,4,,,2')
+      grid: () => Grid.from('1,,,4,,4,1,,,1,4,,4,,,1'),
     }
   }
 };

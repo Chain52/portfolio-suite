@@ -4,15 +4,43 @@ import { GridMutation } from '../solver';
 
 export type Coordinates = [number, number];
 
+const CandidateState = Object.freeze({
+  Expired: 0,
+  Cached: 1
+});
+type CandidateState = (typeof CandidateState)[keyof typeof CandidateState];
+
 class Cell {
   coordinates: Coordinates;
-  number: number | undefined;
-  candidates: Set<number>;
+  #number: number | undefined;
+  #candidates: Set<number>;
+  candidateState: CandidateState = CandidateState.Expired;
 
   constructor(coordinates: Coordinates, number?: number) {
     this.coordinates = coordinates;
-    this.number = number;
-    this.candidates = new Set<number>();
+    this.#number = number;
+    this.#candidates = new Set<number>();
+  }
+
+  get number(): number | undefined {
+    return this.#number;
+  }
+
+  set number(value: number | undefined) {
+    this.#number = value;
+    this.candidateState = CandidateState.Expired;
+  }
+
+  get candidates() {
+    if (this.candidateState === CandidateState.Expired) {
+      this.#candidates = new Set<number>();
+    }
+    return this.#candidates;
+  }
+
+  set candidates(value: Set<number>) {
+    this.#candidates = value;
+    this.candidateState = CandidateState.Cached;
   }
 
   get hasNumber() {
@@ -64,18 +92,29 @@ export class Grid {
     throw new Error('An invalid grid string was supplied.');
   }
 
+  get scale(): number {
+    return this.#scale;
+  }
+
   get size(): number {
     return this.#scale * this.#scale;
   }
 
-  get allCoordinates(): Array<Coordinates> {
-    const result: Array<Coordinates> = [];
-
-    return result;
+  get isEmpty(): boolean {
+    return this.#cells.every((cell) => !cell.hasNumber);
   }
 
-  getCellNumber(coords: Coordinates): number | undefined {
-    return this.#getCell(coords).number;
+  get hasEmptyCells(): boolean {
+    return this.#cells.some((cell) => !cell.hasNumber);
+  }
+
+  get blockScale(): number {
+    const potential = Math.sqrt(this.#scale);
+    return Number.isInteger(potential) ? potential : 0;
+  }
+
+  getCellNumber(location: Coordinates | number): number | undefined {
+    return this.#getCell(location).number;
   }
 
   setCellNumber(
@@ -84,11 +123,28 @@ export class Grid {
   ): GridMutation {
     const cell = this.#getCell(location);
     cell.number = this.#validateCellNumber(value);
+
+    const neighbors = this.#getCellNeighbors(cell);
+
+    for (const neighbor of neighbors) {
+      neighbor.candidateState = CandidateState.Expired;
+    }
     return {
       type: GridMutationType.Number,
       coordinates: cell.coordinates,
       number: cell.number
     };
+  }
+
+  getBlockIndex(location: Coordinates | number): number {
+    if (this.blockScale) {
+      const [col, row] = this.#getCell(location).coordinates;
+      return (
+        Math.floor(row / this.blockScale) * this.blockScale +
+        Math.floor(col / this.blockScale)
+      );
+    }
+    return -1;
   }
 
   getCellCandidates(location: Coordinates | number): Array<number> {
@@ -116,6 +172,40 @@ export class Grid {
     return cell;
   }
 
+  #getCellNeighbors(cell: Cell): Array<Cell> {
+    const neighbors: Array<Cell> = [];
+    const [cellCol, cellRow] = cell.coordinates;
+
+    for (let col = 0; col < this.#scale; col++) {
+      if (col !== cellCol) {
+        neighbors.push(this.#getCell([col, cellRow]));
+      }
+    }
+
+    for (let row = 0; row < this.#scale; row++) {
+      if (row !== cellRow) {
+        neighbors.push(this.#getCell([cellCol, row]));
+      }
+    }
+
+    if (this.blockScale) {
+      const [blockStart, blockEnd] = this.#resolveBlock(cell.coordinates);
+      if (blockStart) {
+        for (let x = blockStart[0]; x <= blockEnd[0]; x++) {
+          if (x !== cellCol) {
+            for (let y = blockStart[1]; y <= blockEnd[1]; y++) {
+              if (y !== cellRow) {
+                neighbors.push(this.#getCell([x, y]));
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return neighbors;
+  }
+
   #getBasicallyReducedCandidates(cell: Cell): Set<number> {
     const candidates = new Set(this.#possibleNumbers);
     const [col, row] = cell.coordinates;
@@ -133,11 +223,18 @@ export class Grid {
     for (let y = 0; y < this.#scale; y++) {
       checkAndReduce(this.#getCell([col, y]));
     }
-    const [blockStart, blockEnd] = this.#resolveBlock(cell.coordinates);
-    if (blockStart) {
-      for (let x = blockStart[0]; x <= blockEnd[0]; x++) {
-        for (let y = blockStart[1]; y <= blockEnd[1]; y++) {
-          checkAndReduce(this.#getCell([x, y]));
+
+    if (this.blockScale) {
+      const [blockStart, blockEnd] = this.#resolveBlock(cell.coordinates);
+      if (blockStart) {
+        for (let x = blockStart[0]; x <= blockEnd[0]; x++) {
+          if (x !== col) {
+            for (let y = blockStart[1]; y <= blockEnd[1]; y++) {
+              if (y !== row) {
+                checkAndReduce(this.#getCell([x, y]));
+              }
+            }
+          }
         }
       }
     }
@@ -145,23 +242,17 @@ export class Grid {
     return candidates;
   }
 
-  #resolveBlock(
-    coords: Coordinates
-  ): [Coordinates, Coordinates] | [null, null] {
+  #resolveBlock(coords: Coordinates): [Coordinates, Coordinates] {
     this.#validateCoords(coords);
 
-    const blockScale = Math.sqrt(this.#scale);
-    if (Number.isInteger(blockScale)) {
-      const blockStart: Coordinates = [
-        Math.floor(coords[0] / blockScale) * blockScale,
-        Math.floor(coords[1] / blockScale) * blockScale
-      ];
-      return [
-        blockStart,
-        [blockStart[0] + blockScale - 1, blockStart[1] + blockScale - 1]
-      ];
-    }
-    return [null, null];
+    const blockStart: Coordinates = [
+      Math.floor(coords[0] / this.blockScale) * this.blockScale,
+      Math.floor(coords[1] / this.blockScale) * this.blockScale
+    ];
+    return [
+      blockStart,
+      [blockStart[0] + this.blockScale - 1, blockStart[1] + this.blockScale - 1]
+    ];
   }
 
   #validateLocation(location: Coordinates | number): number {
@@ -187,9 +278,9 @@ export class Grid {
         `Invalid coordinates: ${JSON.stringify(coords)}. Must be an array of two numbers.`
       );
     }
-    const [row, col] = coords;
+    const [col, row] = coords;
     const errorLines = [
-      `Invalid coordinates: [${row}, ${col}]. Error details:`
+      `Invalid coordinates: [${col}, ${row}]. Error details:`
     ];
     // Type checks for row and column indices
     if (typeof row !== 'number') {

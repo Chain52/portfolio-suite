@@ -4,23 +4,23 @@ import {
   CellMutation,
   Grid,
   GridMutation,
-  NakedSingle
+  HiddenSingle
 } from '@sudoku-backend/common/domain';
 import { GridMutationType } from '@sudoku-backend/common/schema';
 
-describe('NakedSingle Technique Impl', () => {
+describe('HiddenSingle Technique Impl', () => {
   let technique: Technique;
   let grid: Grid;
   let mutation: CellMutation;
   let negativeMutation: GridMutation | undefined;
 
   beforeEach(() => {
-    technique = new NakedSingle();
+    technique = new HiddenSingle();
   });
 
   describe('Initialization', () => {
     it('should be able to initialize', () => {
-      expect(technique).toBeInstanceOf(NakedSingle);
+      expect(technique).toBeInstanceOf(HiddenSingle);
     });
   });
 
@@ -28,11 +28,11 @@ describe('NakedSingle Technique Impl', () => {
     describe('Methods', () => {
       describe('apply', () => {
         describe.each(
-          Object.keys(gridMocks.nakedSingle.positive).map((constraint) => [
-            constraint as keyof typeof gridMocks.nakedSingle.positive
+          Object.keys(gridMocks.hiddenSingle.positive).map((constraint) => [
+            constraint as keyof typeof gridMocks.hiddenSingle.positive
           ])
         )('given a %s-based constraint', (constraint) => {
-          const mock = gridMocks.nakedSingle.positive[constraint];
+          const mock = gridMocks.hiddenSingle.positive[constraint];
           beforeEach(() => {
             grid = mock.grid();
             const tempMutation = technique.apply(grid).mutation;
@@ -53,14 +53,13 @@ describe('NakedSingle Technique Impl', () => {
         });
 
         describe.each(
-          Object.keys(gridMocks.nakedSingle.negative).map((constraint) => [
-            constraint as keyof typeof gridMocks.nakedSingle.negative
+          Object.keys(gridMocks.hiddenSingle.negative).map((constraint) => [
+            constraint as keyof typeof gridMocks.hiddenSingle.negative
           ])
         )('given a %s-based constraint', (constraint) => {
-          const mock = gridMocks.nakedSingle.negative[constraint];
+          const mock = gridMocks.hiddenSingle.negative[constraint];
           beforeEach(() => {
             grid = mock.grid();
-            console.log(grid.toGridString())
             negativeMutation = technique.apply(grid).mutation;
           });
 

@@ -1,19 +1,19 @@
-{
-  "search.exclude": {
-    "**/.yarn": true,
-    "**/.pnp.*": true
-  },
-  "eslint.workingDirectories": [
-    {
-      "mode": "auto"
-    }
-  ],
-  "eslint.nodePath": ".yarn/sdks",
-  "eslint.useFlatConfig": true,
-  "eslint.runtime": "node",
-  "prettier.prettierPath": ".yarn/sdks/prettier/index.cjs",
-  "prettier.enable": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "typescript.tsdk": ".yarn/sdks/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true
-}
+// {
+//   "search.exclude": {
+//     "**/.yarn": true,
+//     "**/.pnp.*": true
+//   },
+//   "eslint.workingDirectories": [
+//     {
+//       "mode": "auto"
+//     }
+//   ],
+//   "eslint.nodePath": ".yarn/sdks",
+//   "eslint.useFlatConfig": true,
+//   "eslint.runtime": "node",
+//   "prettier.prettierPath": ".yarn/sdks/prettier/index.cjs",
+//   "prettier.enable": true,
+//   "editor.defaultFormatter": "esbenp.prettier-vscode",
+//   "typescript.tsdk": ".yarn/sdks/typescript/lib",
+//   "typescript.enablePromptUseWorkspaceTsdk": true
+// }

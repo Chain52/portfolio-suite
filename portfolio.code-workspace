@@ -1,0 +1,45 @@
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "name": "frontend",
+      "path": "apps/main/frontend"
+    },
+    {
+      "name": "sudoku-frontend",
+      "path": "apps/demos/sudoku/frontend"
+    },
+    {
+      "name": "sudoku-backend",
+      "path": "apps/demos/sudoku/backend"
+    },
+    {
+      "name": "devOps",
+      "path": "devOps"
+    }
+  ],
+  "settings": {
+    "search.exclude": {
+      "**/.yarn": true,
+      "**/.pnp.*": true
+    },
+    "eslint.workingDirectories": [
+      {
+        "mode": "auto"
+      }
+    ],
+    "eslint.nodePath": ".yarn/sdks",
+    "eslint.useFlatConfig": true,
+    "eslint.runtime": "node",
+    "prettier.prettierPath": ".yarn/sdks/prettier/index.cjs",
+    "prettier.enable": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "typescript.tsdk": ".yarn/sdks/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "jest.disabledWorkspaceFolders": ["portfolio", "frontend", "frontend"],
+    "jest.jestCommandLine": "yarn workspace @portfolio/sudoku-backend test",
+    "jest.runMode": "on-demand"
+  }
+}

@@ -41,12 +41,11 @@ export default class Solver {
    * @returns Solver
    */
   static createSolver(difficulty: Difficulty, grid: Grid): Solver {
-    // TODO: check for empty grid;
-    if (true) {
+    if (grid.isEmpty) {
       return new Solver(
         this.#constructorKey,
         grid,
-        TechniqueFactory.getAllTechniques()
+        TechniqueFactory.getTechniques()
       );
     }
     return new Solver(
@@ -66,7 +65,7 @@ export default class Solver {
   }
 
   get isSolved(): boolean {
-    return false;
+    return !this.#grid.hasEmptyCells;
   }
 
   get solution(): Solution {

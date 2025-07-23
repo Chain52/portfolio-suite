@@ -30,6 +30,20 @@ describe('Grid Domain Model', () => {
   });
 
   describe('Fields', () => {
+    describe('scale', () => {
+      it('should be present', () => {
+        expect(grid).toHaveProperty('scale');
+      });
+
+      it('should return a number', () => {
+        expect(typeof grid.scale).toBe('number');
+      });
+
+      it('should return the same scale as given in initialization', () => {
+        expect(grid.scale).toBe(TEST_GRID_SCALE);
+      });
+    })
+
     describe('size', () => {
       it('should be present', () => {
         expect(grid).toHaveProperty('size');
@@ -43,9 +57,58 @@ describe('Grid Domain Model', () => {
         expect(grid.size).toBe(TEST_GRID_SCALE * TEST_GRID_SCALE);
       });
     });
+
+    describe('blockScale', () => {
+      it('should be present', () => {
+        expect(grid).toHaveProperty('blockScale');
+      });
+
+      it('should return a number', () => {
+        expect(typeof grid.blockScale).toBe('number');
+      });
+
+      it('should return the scale of individual blocks in the puzzle if present', () => {
+        expect(grid.blockScale).toBe(2);
+      });
+
+      it('should return 0 if blocks are not present', () => {
+        grid = new Grid(3);
+        expect(grid.blockScale).toBe(0);
+      });
+    })
   });
 
   describe('Methods', () => {
+    describe('getCellNumber', () => {
+      it('should be present', () => {
+        expect(grid).toHaveProperty('getCellNumber');
+      });
+
+      it('should return undefined for a not numbered cell', () => {
+        expect(grid.getCellNumber(0)).toBeUndefined();
+      });
+
+      it('should return the number for a numbered cell', () => {
+        grid.setCellNumber(0, 1);
+        expect(grid.getCellNumber(0)).toBe(1);
+      });
+    });
+
+    describe('getBlockIndex', () => {
+      it('should be present', () => {
+        expect(grid).toHaveProperty('getBlockIndex');
+      });
+
+      it('should return -1 if the grid does not have blocks', () => {
+        grid = new Grid(3);
+        expect(grid.getBlockIndex(0)).toBe(-1);
+      });
+
+      it('should return the index the block for a given cell location', () => {
+        expect(grid.getBlockIndex(0)).toBe(0);
+      });
+    })
+
     describe('getCellCandidates', () => {
       it('should be present', () => {
         expect(grid).toHaveProperty('getCellCandidates');
