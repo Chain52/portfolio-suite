@@ -4,6 +4,10 @@
       "path": "."
     },
     {
+      "name": "ui-library",
+      "path": "lib/ui"
+    },
+    {
       "name": "frontend",
       "path": "apps/main/frontend"
     },
@@ -38,7 +42,7 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "typescript.tsdk": ".yarn/sdks/typescript/lib",
     "typescript.enablePromptUseWorkspaceTsdk": true,
-    "jest.disabledWorkspaceFolders": ["portfolio", "frontend", "frontend"],
+    "jest.disabledWorkspaceFolders": ["portfolio", "frontend"],
     "jest.jestCommandLine": "yarn workspace @portfolio/sudoku-backend test",
     "jest.runMode": "on-demand"
   }

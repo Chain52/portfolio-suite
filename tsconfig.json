@@ -15,7 +15,9 @@
       "@utils/*": ["lib/utils/*"],
       "@ui/*": ["lib/ui/*"],
       "@types/*": ["lib/types/*"],
+      "@frontend/*": ["apps/main/frontend/app/*"],
       "@sudoku-backend/*": ["apps/demos/sudoku/backend/src/*"],
+      "@sudoku-frontend/*": ["apps/demos/sudoku/frontend/src/*"],
       "@sudoku-backend-tests/*": ["apps/demos/sudoku/backend/tests/*"]
     },
 
