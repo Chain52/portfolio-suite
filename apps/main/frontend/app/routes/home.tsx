@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { Route } from './+types/home';
 
-import { Projects, Flex, About, Contact } from '~/components';
+import { Projects, Flex, About, Contact } from '@frontend/components';
 
 export default function Home() {
   return (

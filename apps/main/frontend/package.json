@@ -1,6 +1,7 @@
 {
   "name": "@portfolio/client",
   "type": "module",
+  "packageManager": "yarn@4.9.2",
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
@@ -30,7 +31,7 @@
     "prettier-plugin-tailwindcss": "^0.6.12",
     "tailwindcss": "^4.1.4",
     "typescript": "^5.8.3",
-    "vite": "^6.3.3",
+    "vite": "^7.0.0",
     "vite-tsconfig-paths": "^5.1.4"
   }
 }

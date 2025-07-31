@@ -1,0 +1,14 @@
+{
+  "extends": "../../../tsconfig.json",
+  "include": ["**/*.ts", "**/*.tsx", ".react-router/types/**/*"],
+  "compilerOptions": {
+    // Modules
+    "types": ["node", "vite/client"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "rootDirs": [".", "./.react-router/types"],
+
+    // Language & Environment
+    "lib": ["DOM", "DOM.Iterable", "ES2022"]
+  }
+}
