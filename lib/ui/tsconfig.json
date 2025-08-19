@@ -1,17 +1,6 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    // Modules
-    "baseUrl": ".",
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "paths": {
-      "@portfolio/ui": ["src"]
-    },
-
-    // Language and Environment
-    "jsx": "react-jsx",
-
     // Projects
     "composite": true
   },

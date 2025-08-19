@@ -1,4 +1,5 @@
-@source inline('{sm:,md:,lg:,xl:,2xl:,}flex-{row,col,row-reverse,col-reverse,wrap,nowrap,wrap-reverse,{1..5..1}}');
+@source inline('flex');
+@source inline('{sm:,md:,lg:,xl:,2xl:,}flex-{row,col,row-reverse,col-reverse,wrap,nowrap,wrap-reverse,auto,initial,none,{1..5..1}}');
 @source inline('{sm:,md:,lg:,xl:,2xl:,}grow-{0..5..1}');
 @source inline('{sm:,md:,lg:,xl:,2xl:,}grow');
 @source inline('{sm:,md:,lg:,xl:,2xl:,}shrink-{0..5..1}');
