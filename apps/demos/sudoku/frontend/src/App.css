@@ -1,2 +1,9 @@
 @import 'tailwindcss';
 @import '@portfolio/ui/styles.css';
+
+@theme {
+  --color-primary: #5959c5;
+  --color-primary-light: #d2d2ef;
+  --color-interactive: #214dff;
+  --color-highlight: #dddde4;
+}

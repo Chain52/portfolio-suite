@@ -1,7 +1,16 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 
 export interface Game {
-  id: string;
+  id: number;
+  grid: {
+    scale: number;
+    blockConfig: {
+      hasBlocks: boolean;
+      shape: 'square';
+      scale: number;
+    };
+    cells: Array<number | undefined>;
+  };
 }
 
 const gameEntity = createEntityAdapter<Game>();
